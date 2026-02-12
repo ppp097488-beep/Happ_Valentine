@@ -1,9 +1,3 @@
-document.addEventListener("click", function() {
-  const bgm = document.getElementById("bgm");
-  if (bgm && bgm.paused) {
-    bgm.play().catch(()=>{});
-  }
-}, { once: true });
 
 const images = {
   page1: "images/page1.png",
@@ -148,4 +142,5 @@ function page10(){
 }
 
 page1();
+
 
