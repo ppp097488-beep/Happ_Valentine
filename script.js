@@ -35,74 +35,77 @@ function page1(){
 }
 
 function page2(){
-  render(`<div class="page"><div class="card"><div id="typing" class="typewriter"></div><div id="btns"></div></div></div>`);
+  render(`
+    <div class="page">
+      <div class="card">
+        <div id="typing" class="typewriter"></div>
+        <div id="btns"></div>
+      </div>
+    </div>
+  `);
 
   const text = "Will you be my Valentine?";
   let i = 0;
   const typing = document.getElementById("typing");
+
   const interval = setInterval(()=>{
     typing.textContent += text[i];
     i++;
     if(i >= text.length){
       clearInterval(interval);
+
       document.getElementById("btns").innerHTML = `
         <button class="primary" onclick="page3()">Yes</button>
-        <button id="noBtn" class="light">No</button>`;
+        <button id="noBtn" class="light">No</button>
+      `;
 
       const noBtn = document.getElementById("noBtn");
-noBtn.style.position = "absolute";
 
-function moveNoButton() {
-  const maxX = window.innerWidth - noBtn.offsetWidth;
-  const maxY = window.innerHeight - noBtn.offsetHeight;
+      // 위치 절대값
+      noBtn.style.position = "absolute";
 
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
+      function moveNoButton(){
+        const maxX = window.innerWidth - noBtn.offsetWidth;
+        const maxY = window.innerHeight - noBtn.offsetHeight;
 
-  noBtn.style.left = randomX + "px";
-  noBtn.style.top = randomY + "px";
+        noBtn.style.left = Math.random() * maxX + "px";
+        noBtn.style.top = Math.random() * maxY + "px";
+      }
+
+      // 📱 모바일 → 계속 도망
+      if ("ontouchstart" in window){
+        setInterval(moveNoButton, 350);
+      }
+
+      // 💻 PC → 버튼 근처 오면 도망 (document 말고 버튼 기준)
+      noBtn.addEventListener("mouseenter", moveNoButton);
+
+      // 💬 말풍선
+      noBtn.addEventListener("click", function(e){
+        e.preventDefault();
+        moveNoButton();
+
+        const bubble = document.createElement("div");
+        bubble.innerText = "왜 자꾸 눌러 😝";
+        bubble.style.position = "fixed";
+        bubble.style.left = Math.random() * (window.innerWidth - 120) + "px";
+        bubble.style.top = Math.random() * (window.innerHeight - 40) + "px";
+        bubble.style.background = "white";
+        bubble.style.padding = "8px 14px";
+        bubble.style.borderRadius = "20px";
+        bubble.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+        bubble.style.fontSize = "14px";
+        bubble.style.zIndex = "999";
+
+        document.body.appendChild(bubble);
+
+        setTimeout(()=>{
+          bubble.remove();
+        }, 900);
+      });
+    }
+  }, 60);
 }
-
-// 📱 모바일에서는 계속 도망
-if ("ontouchstart" in window) {
-  setInterval(moveNoButton, 400);
-}
-
-// 💻 PC에서는 마우스 오면 도망
-document.addEventListener("mousemove", function (e) {
-  const rect = noBtn.getBoundingClientRect();
-  const distance = Math.hypot(
-    e.clientX - (rect.left + rect.width / 2),
-    e.clientY - (rect.top + rect.height / 2)
-  );
-
-  if (distance < 120) {
-    moveNoButton();
-  }
-});
-
-// 💬 말풍선
-noBtn.addEventListener("click", function () {
-  moveNoButton();
-
-  const bubble = document.createElement("div");
-  bubble.innerText = "왜 자꾸 눌러 😝";
-  bubble.style.position = "fixed";
-  bubble.style.left = Math.random() * window.innerWidth + "px";
-  bubble.style.top = Math.random() * window.innerHeight + "px";
-  bubble.style.background = "white";
-  bubble.style.padding = "8px 14px";
-  bubble.style.borderRadius = "20px";
-  bubble.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
-  bubble.style.fontSize = "14px";
-  bubble.style.zIndex = "999";
-
-  document.body.appendChild(bubble);
-
-  setTimeout(() => {
-    bubble.remove();
-  }, 1000);
-});
 
 function page3(){
   render(`
@@ -193,6 +196,7 @@ function page10(){
 }
 
 page1();
+
 
 
 
