@@ -50,16 +50,59 @@ function page2(){
         <button id="noBtn" class="light">No</button>`;
 
       const noBtn = document.getElementById("noBtn");
-setInterval(()=>{
-  const noBtn = document.getElementById("noBtn");
-  if(!noBtn) return;
-  noBtn.style.left=Math.random()*window.innerWidth+"px";
-  noBtn.style.top=Math.random()*window.innerHeight+"px";
-}, 500);
+noBtn.style.position = "absolute";
 
-    }
-  },50);
+function moveNoButton() {
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
 }
+
+// 📱 모바일에서는 계속 도망
+if ("ontouchstart" in window) {
+  setInterval(moveNoButton, 400);
+}
+
+// 💻 PC에서는 마우스 오면 도망
+document.addEventListener("mousemove", function (e) {
+  const rect = noBtn.getBoundingClientRect();
+  const distance = Math.hypot(
+    e.clientX - (rect.left + rect.width / 2),
+    e.clientY - (rect.top + rect.height / 2)
+  );
+
+  if (distance < 120) {
+    moveNoButton();
+  }
+});
+
+// 💬 말풍선
+noBtn.addEventListener("click", function () {
+  moveNoButton();
+
+  const bubble = document.createElement("div");
+  bubble.innerText = "왜 자꾸 눌러 😝";
+  bubble.style.position = "fixed";
+  bubble.style.left = Math.random() * window.innerWidth + "px";
+  bubble.style.top = Math.random() * window.innerHeight + "px";
+  bubble.style.background = "white";
+  bubble.style.padding = "8px 14px";
+  bubble.style.borderRadius = "20px";
+  bubble.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+  bubble.style.fontSize = "14px";
+  bubble.style.zIndex = "999";
+
+  document.body.appendChild(bubble);
+
+  setTimeout(() => {
+    bubble.remove();
+  }, 1000);
+});
 
 function page3(){
   render(`
@@ -150,6 +193,7 @@ function page10(){
 }
 
 page1();
+
 
 
 
