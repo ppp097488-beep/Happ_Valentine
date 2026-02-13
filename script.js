@@ -50,11 +50,13 @@ function page2(){
         <button id="noBtn" class="light">No</button>`;
 
       const noBtn = document.getElementById("noBtn");
-      noBtn.addEventListener("mouseover",()=>{
-        noBtn.style.position="absolute";
-        noBtn.style.left=Math.random()*300+"px";
-        noBtn.style.top=Math.random()*200+"px";
-      });
+setInterval(()=>{
+  const noBtn = document.getElementById("noBtn");
+  if(!noBtn) return;
+  noBtn.style.left=Math.random()*window.innerWidth+"px";
+  noBtn.style.top=Math.random()*window.innerHeight+"px";
+}, 500);
+
     }
   },50);
 }
@@ -148,6 +150,7 @@ function page10(){
 }
 
 page1();
+
 
 
 
